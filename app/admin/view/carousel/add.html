@@ -1,0 +1,151 @@
+{extend name="base/base" /}
+
+{block name="title"}
+文章添加
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="img" class="layui-form-label">
+                    <span class="x-red">*</span>滚动图
+                </label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn" id="img">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>选择文章
+                </label>
+                <div id="article" class="layui-show-xs-block">
+                        <table class="layui-table layui-form">
+                            <thead>
+                            <tr>
+                                <th width="40">选择</th>
+                                <th>更新时间</th>
+                                <th>标题</th>
+                            </thead>
+                            <tbody>
+                            {volist name='article_list' id='vo'}
+                            <tr>
+                                <td>
+                                    <input type="radio" name="url" value="{$vo.url}">
+                                <td>{$vo.update_time}</td>
+                                <td id="title">{$vo.title}</td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                        <div class="page">
+                            <div>
+                                {$article_list|raw}
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+
+    layui.use(['form', 'layer','upload','layedit'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,//表单
+            layer = layui.layer,
+            upload = layui.upload;//图片上传
+
+
+            //图片上传
+            var uploadInst = upload.render({
+
+                elem: '#img' //绑定元素
+                ,field:'img'//上传名称
+                ,method:'post'
+                ,url: '/admin/upload/carousel' //上传接口
+                ,acceptMime: 'image/*'//打开选择狂选择文件格式
+                ,accept:'images'//限制文件类型
+                ,exts:'jpg|png|gif|bmp|jpeg'//图片格式限制
+                ,size:'2000'//图片大小限制
+                ,done: function(result){
+                    if (result.status == 1){
+                        $("form img").remove();
+                        $('#img').parent().append('<img name="img" src='+result.data+' width="200" alt="">');
+                    }
+                }
+                ,error: function(){
+                    //请求异常回调
+                    layer.msg('上传失败',
+                        {icon: 5,
+                            time:1000,
+                        });
+                    return false;
+                }
+            });
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                data = data.field;
+                data.img = $("img[name='img']").attr("src");
+                data.title = $('#title').html()
+                //发异步，把数据提交给php
+                $.ajax({
+                        url:'/admin/carousel/add',
+                        data:data,
+                        type:"POST",
+                        success:function (result) {
+                            result = JSON.parse(result);
+                            // console.log(result.status);
+                            // return false;
+                            if (result.status == 1){
+                                layer.alert("添加成功", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+
+                                        // 可以对父窗口进行刷新
+                                        xadmin.father_reload();
+                                    });
+                            }else {
+                                layer.alert("添加失败", {
+                                    icon: 5
+                                })
+                            }
+                        }
+                    });
+                return false;
+            });
+
+    });
+</script>
+{/block}

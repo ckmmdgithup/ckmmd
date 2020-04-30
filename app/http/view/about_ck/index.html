@@ -1,0 +1,52 @@
+{extend name="base/base" /}
+
+{block name="title"}
+ckmmd的博客首页
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/css/timeline.css" />
+{/block}
+
+{block name="nav"}
+{include file="base/nav" /}
+{/block}
+
+{block name="content"}
+<nav class="breadcrumb">
+	<div class="container"><i class="Hui-iconfont">&#xe67f;</i> <a href="/" class="c-primary">首页</a> <span class="c-gray en">&gt;</span> <span class="c-gray">关于博主</span></div>
+</nav>
+<div class="container-fluid">
+	<div class="about">
+		<h2>Just about me</h2>
+		<ul>
+			<p>{$ck_info->brief}</p>
+		</ul>
+		<h2>About my blog</h2>
+		<ul>
+			<p>域  名：{$web_info->domain}</p>
+			<p>服务器：{$web_info->server}</p>
+			<p>备案号：{$web_info->web_case}</p>
+			<p>{$web_info->information}</p>
+		</ul>
+		<h2>Contact  me</h2>
+		<ul>
+			<p><i class="Hui-iconfont">&#xe67b;</i>qq : {$ck_info->qq}</p>
+			<p><i class="Hui-iconfont">&#xe6d1;</i>git：{$ck_info->git}</p>
+			<p><i class="Hui-iconfont">&#xe63b;</i>email : {$ck_info->email}</p>
+		</ul>
+	</div>
+
+</div>
+{/block}
+
+{block name="other"}
+
+{/block}
+{block name="footer"}
+{include file="base/footer" /}
+{/block}
+
+{block name="js"}
+
+{/block}

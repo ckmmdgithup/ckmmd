@@ -1,0 +1,31 @@
+<div id="article" class="layui-show-xs-block">
+    <table class="layui-table layui-form">
+        <thead>
+        <tr>
+            <th width="40">选择</th>
+            <th>更新时间</th>
+            <th>标题</th>
+        </thead>
+        <tbody>
+        {volist name='article_list' id='vo'}
+        <tr>
+            <td>
+                <input type="radio" name="article" value="nan">
+            <td>{$vo.update_time}</td>
+            <td>{$vo.title}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    <div class="page">
+        <div>
+            {$article_list|raw}
+        </div>
+    </div>
+
+</div>
+
+
+
+
+

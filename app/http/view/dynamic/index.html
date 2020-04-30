@@ -1,0 +1,81 @@
+{extend name="base/base" /}
+
+{block name="title"}
+ckmmd的博客首页
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/css/timeline.css" />
+{/block}
+
+{block name="nav"}
+{include file="base/nav" /}
+{/block}
+
+{block name="content"}
+<nav class="breadcrumb">
+	<div class="container"><i class="Hui-iconfont">&#xe67f;</i> <a href="index.html" class="c-primary">首页</a> <span class="c-gray en">&gt;</span> <span class="c-gray">博主动态</span></div>
+</nav>
+
+<section class="container mt-20">
+	<div class="container-fluid">
+		<div class="timeline">
+			{volist name = 'dynamic_list' id='vo'}
+			<div class="cd-timeline-block">
+				<div class="cd-timeline-img cd-picture">
+					<img src="{_HTTP_PATH}/css/timeline/cd-icon-location.svg" alt="position">
+				</div>
+				<div class="cd-timeline-content">
+					<img class="dynamic_pic" src="{$vo.img}" alt="">
+					<p class="dynamic_p height60">{$vo.content}</p>
+					<input onclick="more(this)" class="f-r btn btn-success size-S" type="button" value="更多">
+					<span class="cd-date">{$vo.create_time}</span>
+				</div>
+			</div>
+			{/volist}
+		</div>
+	</div>
+
+</section>
+{/block}
+
+{block name="other"}
+
+{/block}
+
+{block name="footer"}
+{include file="base/footer" /}
+{/block}
+
+{block name="js"}
+<script>
+	function more(obj) {
+		if ($(obj).val()=='更多'){
+			$(obj).prev().removeClass('height60');
+			$(obj).val('收起');
+		}else {
+			$(obj).prev().addClass('height60');
+			$(obj).val('更多');
+		}
+	}
+	// $(function () {
+	// 	//on scolling, show/animate timeline blocks when enter the viewport
+	// 	$(window).on('scroll', function () {
+	// 		$('.cd-timeline-block').each(function () {
+	// 			if ($(this).offset().top <= $(window).scrollTop() + $(window).height() * 0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden')) {
+	// 				$(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
+	// 			}
+	// 			if ($(window).scrollTop() - $(this).offset().top > 0) {
+	// 				$(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden').removeClass('bounce-in');
+	// 			}
+	//
+	// 		});
+	// 		$('.cd-timeline-block').each(function(){
+	// 			if($(this).offset().top < $(window).scrollTop()+$(window).height()*0.75) {
+	// 				$(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden');
+	// 			}
+	// 		});
+	// 	});
+	// });
+</script>
+{/block}

@@ -1,0 +1,192 @@
+{extend name="base/base" /}
+
+{block name="title"}
+文章分类
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form id="layui-form" class="layui-form">
+            <div class="layui-form-item">
+                <label for="name" class="layui-form-label">
+                    <span class="x-red">*</span>分类名称
+                </label>
+                <div class="layui-input-inline">
+                    <input type="hidden" disabled="true" name="id" value="{$article_category->id}" >
+                    <input type="hidden" disabled="true" name="path" value="{$article_category->path}" >
+                    <input type="hidden" disabled="true" name="has_son" value="{$article_category->has_son}" >
+                    <input value="{$article_category->name}" type="text" id="name" name="name" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>不可重复
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="uname" class="layui-form-label">
+                    <span class="x-red">*</span>分类别名
+                </label>
+                <div class="layui-input-inline">
+                    <input value="{$article_category->uname}" type="text" id="uname" name="uname" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>不可重复,请不要使用中文
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>父级分类
+                </label>
+                <div class="layui-inline layui-show-xs-block">
+                    <select name="pid">
+                        <option cate-path="0," value="0">一级分类</option>
+
+                        {foreach article_category_list as $key=>$vo}
+                        {php}
+                        $arr = explode(',',$vo['path']);
+                        $num =count($arr)-2;
+                        {/php}
+                        <option {if $vo.id == $article_category.pid}selected="selected"{/if}
+                                cate-path="{$vo.path}"
+
+                                class="show-son"
+
+                                {php}
+                                $id = $article_category['id'];
+                                if(in_array($id,$arr) || $vo['id']==$article_category['id'] || $vo['status'] != 1){
+                                    echo 'disabled=true';
+                                }
+                                {/php}
+
+                                value="{$vo.id}">{php}echo str_repeat('|--',$num){/php}{$vo.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="title" class="layui-form-label">
+                    <span class="x-red">*</span>分类标题
+                </label>
+                <div class="layui-input-inline">
+                    <input value="{$article_category->title}" type="text" id="title" name="title" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>用于SEO
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="keywords" class="layui-form-label">
+                    <span class="x-red">*</span>keywords
+                </label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="" id="keywords" name="keywords" class="layui-textarea">{$article_category->keywords}</textarea>
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    用于SEO
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="description" class="layui-form-label">
+                    <span class="x-red">*</span>description
+                </label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="" id="description" name="description" class="layui-textarea">{$article_category->description}</textarea>
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    用于SEO
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="description" class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="save" lay-submit="">
+                    保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+    var form_info= $("#layui-form").serializeArray();
+    var form_string = JSON.stringify({data:form_info});
+    layui.use(['form', 'layer'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+
+            });
+
+            //监听提交
+            form.on('submit(save)',
+                function(data) {
+                    //console.log(data.field);
+                    //发异步，把数据提交给php
+
+
+                    var path = $('option:selected').attr('cate-path');
+                    data = data.field;
+                    data.path = path;
+                    var data_info= $("#layui-form").serializeArray();
+                    var data_string = JSON.stringify({data:data_info});
+                    //检查是否做过修改
+                    if (data_string == form_string){
+                        layer.alert("未做修改", {
+                            icon: 3
+                        });
+                        return false;
+                    }
+                    $.ajax({
+                        url: '/admin/article_category/edit',
+                        data:data,
+                        type:"POST",
+                        success:function (result) {
+                            result = JSON.parse(result);
+                            if (result.status == 1){
+                                layer.alert("修改成功", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+
+                                        // 可以对父窗口进行刷新
+                                        xadmin.father_reload();
+                                    });
+                            }else {
+                                layer.alert("修改失败", {
+                                    icon: 5
+                                })
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+        });
+
+</script>
+{/block}

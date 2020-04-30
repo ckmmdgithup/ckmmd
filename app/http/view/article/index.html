@@ -1,0 +1,110 @@
+{extend name="base/base" /}
+
+{block name="title"}
+ckmmd的博客首页
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="nav"}
+{include file="base/nav" /}
+{/block}
+
+{block name="content"}
+
+<div class="col-sm-9 col-md-9">
+	<div class="panel panel-primary mb-20">
+		<div class="panel-body">
+			{volist name='article_category_list_by_pid' id='vo' }
+			<a href="/http/article/list/{$vo.uname}.html"><input class="btn btn-primary-outline radius nav-btn" type="button" value="{$vo.name}"></a>
+			{/volist}
+		</div>
+	</div>
+	<div class="art_content">
+		<ul class="index_arc">
+			{volist name='article_list' id = 'vo'}
+			<li class="index_arc_item">
+				<a href="{$vo.url}" class="pic">
+					<img class="lazyload" src="{$vo.thumbnail}" alt="" />
+				</a>
+				<h4 class="title"><a href="{$vo.url}">{$vo.title}</a></h4>
+				<div class="date_hits">
+					<span>{$vo.author}</span>
+					<span>{$vo.update_time}</span>
+					<span><a href="/http/article/list/{$vo.cate_uname}.html">{$vo.cate_uname}</a></span>
+					<p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {$vo.read_num} </p>
+					<p class="commonts"><i class="Hui-iconfont" title="点击量">&#xe622;</i> <span class="cy_cmt_count">{$vo.read_num}</span></p>
+				</div>
+				<div class="desc">{$vo.description | raw}</div>
+			</li>
+			{/volist}
+			<div class="text-c mb-20" id="moreBlog">
+				<a class="btn  radius btn-block " cate="{$article_cate}" page="2" href="javascript:;" onclick="moreArticle(this);">点击加载更多</a>
+				<a class="btn  radius btn-block hidden" href="javascript:;">加载中……</a>
+			</div>
+		</ul>
+
+	</div>
+</div>
+
+{/block}
+
+{block name="other"}
+
+{include file="base/other" /}
+
+{/block}
+
+{block name="footer"}
+{include file="base/footer" /}
+{/block}
+
+{block name="js"}
+<script type="text/javascript" src="{_HTTP_PATH}/plugin/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js"></script>
+
+<script>
+	$(function(){
+//幻灯片
+		jQuery(".slider_main .slider").slide({mainCell: ".bd ul", titCell: ".hd li", trigger: "mouseover", effect: "leftLoop", autoPlay: true, delayTime: 700, interTime: 2000, pnLoop: true, titOnClassName: "active"})
+//tips
+		jQuery(".slideTxtBox").slide({titCell: ".hd ul", mainCell: ".bd ul", autoPage: true, effect: "top", autoPlay: true});
+//标签
+		$(".tags a").each(function(){
+			var x = 9;
+			var y = 0;
+			var rand = parseInt(Math.random() * (x - y + 1) + y);
+			$(this).addClass("tags"+rand)
+		});
+
+		$("img.lazyload").lazyload({failurelimit : 3});
+	});
+	function moreArticle(obj) {
+		$(obj).next().removeClass('hidden');
+		var page = $(obj).attr('page');
+		var cate = $(obj).attr('cate');
+		var data = {
+			'page': page,
+			'cate':cate
+		}
+		$.ajax({
+			url:'/http/article/more_article.html',
+			data:data,
+			type:'POST',
+			success:function (result) {
+				if (result == 0){
+					$(obj).next().html('非常遗憾!加载失败.....')
+				}else {
+					$(obj).parent('div').before(result);
+					$(obj).next().addClass('hidden');
+					page++;
+					$(obj).attr('page',page);
+				}
+
+			}
+		});
+		return false;
+	}
+</script>
+{/block}

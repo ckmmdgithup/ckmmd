@@ -1,0 +1,16 @@
+{volist name='more_article' id = 'vo'}
+<li class="index_arc_item">
+    <a href="{$vo.url}" class="pic">
+        <img class="lazyload" src="{$vo.thumbnail}" alt="" />
+    </a>
+    <h4 class="title"><a href="{$vo.url}">{$vo.title}</a></h4>
+    <div class="date_hits">
+        <span>{$vo.author}</span>
+        <span>{$vo.update_time}</span>
+        <span><a href="/http/article/list/{$vo.cate_uname}.html">{$vo.cate_uname}</a></span>
+        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {$vo.read_num} </p>
+        <p class="commonts"><i class="Hui-iconfont" title="点击量">&#xe622;</i> <span class="cy_cmt_count">{$vo.read_num}</span></p>
+    </div>
+    <div class="desc">{$vo.description | raw}</div>
+</li>
+{/volist}

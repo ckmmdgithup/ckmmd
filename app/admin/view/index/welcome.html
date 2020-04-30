@@ -1,0 +1,95 @@
+{extend name="base/base" /}
+
+{block name="title"}
+welcome
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <blockquote class="layui-elem-quote">欢迎管理员：
+                        <span class="x-red">{$user_info->name}!</span>今天是{$sys_info.time}
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">数据统计</div>
+                <div class="layui-card-body ">
+                    <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="/admin/article/list" class="x-admin-backlog-body">
+                                <h3>文章数</h3>
+                                <p>
+                                    <cite>{$article_num}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="/admin/dynamic/list" class="x-admin-backlog-body">
+                                <h3>动态数</h3>
+                                <p>
+                                    <cite>{$dynamic_num}</cite></p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                            <th>服务器地址</th>
+                            <td>{$sys_info.ip}</td></tr>
+                        <tr>
+                            <th>操作系统</th>
+                            <td>{$sys_info.osname}</td></tr>
+                        <tr>
+                            <th>运行环境</th>
+                            <td>{$sys_info.os}</td></tr>
+                        <tr>
+                            <th>PHP版本</th>
+                            <td>{$sys_info.version}</td></tr>
+                        <tr>
+                            <th>MYSQL版本</th>
+                            <td>{$sys_info.mysql_version}</td></tr>
+                        <tr>
+                            <th>上传附件限制</th>
+                            <td>{$sys_info.max_upload}</td></tr>
+                        <tr>
+                            <th>执行时间限制</th>
+                            <td>{$sys_info.max_ex_time}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <style id="welcome_style"></style>
+        <div class="layui-col-md12">
+            <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote></div>
+    </div>
+</div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript" src=""></script>
+{/block}

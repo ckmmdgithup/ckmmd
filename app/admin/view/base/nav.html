@@ -1,0 +1,66 @@
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe6b8;</i>
+                    <cite>文章管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('文章分类管理','/admin/article_category/list')">
+                            <i class="iconfont">&#xe6b4;</i>
+                            <cite>文章分类管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('所有文章','/admin/article/list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>所有文章</cite>
+                        </a>
+                    </li>
+                    {volist name='article_category_list_by_pid' id='vo'}
+                    <li>
+                        <a onclick="xadmin.add_tab('{$vo.name}','/admin/article/list/{$vo.uname}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>{$vo.name}</cite>
+                        </a>
+                    </li>
+                    {/volist}
+                </ul>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('博主动态','/admin/dynamic/list')">
+                    <i class="iconfont left-nav-li" lay-tips="博主动态">&#xe723;</i>
+                    <cite>博主动态</cite>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="系统设置">&#xe6b8;</i>
+                    <cite>系统设置</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('关于CK','/admin/about_ck/index')">
+                            <i class="iconfont left-nav-li" lay-tips="关于CK">&#xe723;</i>
+                            <cite>关于CK</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('网站设置','/admin/setting/index')">
+                            <i class="iconfont left-nav-li" lay-tips="网站设置">&#xe6b4;</i>
+                            <cite>网站设置</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('滚动图片','/admin/carousel/list')">
+                            <i class="iconfont left-nav-li" lay-tips="滚动图片">&#xe6b4;</i>
+                            <cite>滚动图片</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>

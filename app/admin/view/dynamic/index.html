@@ -1,0 +1,226 @@
+{extend name="base/base" /}
+
+{block name="title"}
+博主动态
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a><cite>博主动态</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="img" class="layui-form-label">
+                                <span class="x-red">*</span>照片
+                            </label>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn" id="img">
+                                    <i class="layui-icon">&#xe67c;</i>上传照片
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="content" class="layui-form-label">
+                                <span class="x-red">*</span>简述
+                            </label>
+                            <div class="layui-input-inline">
+                                <textarea style="width: 800px" placeholder="" id="content" name="content" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">
+                                <span class="x-red">*</span>保存
+                            </label>
+                            <button  class="layui-btn" lay-filter="add" lay-submit="">
+                                保存
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th width="40">
+                                <input type="checkbox" name=""  lay-skin="primary">
+                            </th>
+                            <th width="20">ID</th>
+                            <th width="100">照片</th>
+                            <th width="500">内容</th>
+                            <th width="150">时间</th>
+                            <th width="100">删除</th>
+                        </thead>
+                        <tbody>
+                        {volist name='dynamic_list' id='vo'}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name=""  lay-skin="primary">
+                            </td>
+                            <td>{$vo.id}</td>
+                            <td><img src="{$vo.img}" alt="" width="80"></td>
+                            <td>{$vo.content}</td>
+                            <td>{$vo.create_time}</td>
+                            <td class="td-manage">
+                                <a title="删除" onclick="dynamic_del(this,'{$vo.id}')" href="javascript:;">
+                                    <i class="layui-icon">&#xe640;</i>
+                                </a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="page">
+                        <div>
+                            {$dynamic_list |raw}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['laydate','form','upload'], function(){
+        var laydate = layui.laydate,
+            form = layui.form,
+            upload = layui.upload;//图片上传
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+
+        //图片上传
+        var uploadInst = upload.render({
+
+            elem: '#img' //绑定元素
+            ,field:'img'//上传名称
+            ,method:'post'
+            ,url: '/admin/upload/dynamic_img' //上传接口
+            ,acceptMime: 'image/*'//打开选择狂选择文件格式
+            ,accept:'images'//限制文件类型
+            ,exts:'jpg|png|gif|bmp|jpeg'//图片格式限制
+            ,size:'2000'//图片大小限制
+            ,done: function(result){
+                if (result.status == 1){
+                    $("form img").remove();
+                    $('#img').parent().append('<img name="img" src='+result.data+' width="200" alt="">');
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                layer.msg('上传失败',
+                    {icon: 5,
+                        time:1000,
+                    });
+                return false;
+            }
+        });
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                data = data.field;
+                data.img = $("img[name='img']").attr("src");
+                //发异步，把数据提交给php
+                $.ajax({
+                    url:'/admin/dynamic/add',
+                    data:data,
+                    type:"POST",
+                    success:function (result) {
+                        result = JSON.parse(result);
+                        // console.log(result.status);
+                        // return false;
+                        if (result.status == 1){
+                            layer.msg("添加成功", {
+                                    icon: 6
+                                },
+                                function() {
+                                    window.location.reload();
+                                });
+                        }else {
+                            layer.msg("添加失败", {
+                                icon: 5
+                            })
+                        }
+                    }
+                });
+                return false;
+            });
+    });
+
+    /*用户-删除*/
+    function dynamic_del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            //发异步删除数据
+            $.ajax({
+                url:'/admin/dynamic/del',
+                data:{
+                    'id':id
+                },
+                type:"POST",
+                success:function (result) {
+                    result = JSON.parse(result);
+                    // console.log(result.status);
+                    // return false;
+                    if (result.status == 1){
+                        $(obj).parents("tr").remove();
+                        layer.msg("已经删除", {
+                                icon: 6
+                            });
+                    }else {
+                        layer.msg("删除失败", {
+                            icon: 5
+                        })
+                    }
+                }
+            });
+        });
+    }
+
+
+
+    function delAll (argument) {
+
+        var data = tableCheck.getData();
+
+        layer.confirm('确认要删除吗？'+data,function(index){
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+    }
+</script>
+{/block}

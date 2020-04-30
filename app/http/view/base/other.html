@@ -1,0 +1,81 @@
+<!--other-->
+<div class="col-sm-3 col-md-3">
+
+    <!--站点声明-->
+    <div class="panel panel-default mb-20">
+        <div class="panel-body">
+            <i class="Hui-iconfont" style="float: left;">&#xe62f;&nbsp;</i>
+            <div class="slideTxtBox">
+                <div class="bd">
+                    <ul>
+                        <li><a href="javascript:void(0);">本站内容仅供学习和参阅，不做任何商业用途</a></li>
+                        <li><a href="javascript:void(0);">内容如有侵犯，请立即联系管理员删除</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--博主信息-->
+    <div class="bg-fff box-shadow radius mb-20">
+        <div class="tab-category">
+            <a href=""><strong>博主信息</strong></a>
+        </div>
+        <div class="tab-category-item">
+            <ul class="index_recd">
+                <li class="index_recd_item"><i class="Hui-iconfont">&#xe653;</i>博主:{$ck_info->webmaster}</li>
+                <li class="index_recd_item"><i class="Hui-iconfont">&#xe70d;</i>qq：{$ck_info->qq}</li>
+                <li class="index_recd_item"><i class="Hui-iconfont">&#xe63b;</i>邮箱：{$ck_info->email}</li>
+                <li class="index_recd_item"><i class="Hui-iconfont">&#xe671;</i>git：{$ck_info->git}</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!--热门推荐-->
+    <div class="bg-fff box-shadow radius mb-20">
+        <div class="tab-category">
+            <a href=""><strong>热门推荐</strong></a>
+        </div>
+        <div class="tab-category-item">
+            <ul class="index_recd">
+                {volist name='article_hot_list' id='vo'}
+                <li>
+                    <a href="{$vo.url}">{$vo.title}</a>
+                    <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i>{$vo.read_num}</p>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+
+    <!--点击排行-->
+    <div class="bg-fff box-shadow radius mb-20">
+        <div class="tab-category">
+            <a href=""><strong>点击排行</strong></a>
+        </div>
+        <div class="tab-category-item">
+            <ul class="index_recd clickTop">
+                {volist name='article_list_read_order' id='vo'}
+                <li>
+                    <a href="{$vo.url}">{$vo.title}</a>
+                    <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {$vo.read_num}° </p>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+
+    <!--友情链接-->
+    <div class="bg-fff box-shadow radius mb-20">
+        <div class="tab-category">
+            <a href=""><strong>隔壁邻居</strong></a>
+        </div>
+        <div class="tab-category-item">
+            <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">百度</a></span>
+            <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">淘宝</a></span>
+            <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">腾讯</a></span>
+            <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">慕课网</a></span>
+            <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">h-ui</a></span>
+        </div>
+    </div>
+</div>

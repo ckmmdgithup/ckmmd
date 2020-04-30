@@ -1,0 +1,173 @@
+{extend name="base/base" /}
+
+{block name="title"}
+关于CK
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a><cite>关于CK</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <form id="layui-form" class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">关于站长:</label>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="img" class="layui-form-label">
+                            <span class="x-red">*</span>LOGO
+                        </label>
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn" id="img">
+                                <i class="layui-icon">&#xe67c;</i>上传图片
+                            </button>
+                            <img name="img" src="{$ck_information->img}" width="200" alt="">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                            <label class="layui-form-label">站长</label>
+                        <div class="layui-input-inline">
+                            <input value="{$ck_information->webmaster}" type="text" name="webmaster" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ</label>
+                        <div class="layui-input-inline">
+                            <input value="{$ck_information->qq}" type="text" name="qq" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">git</label>
+                        <div class="layui-input-inline">
+                            <input value="{$ck_information->git}" type="text" name="git" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">email</label>
+                        <div class="layui-input-inline">
+                            <input value="{$ck_information->email}" type="text" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">简述</label>
+                        <div class="layui-input-block">
+                            <textarea name="brief" class="layui-textarea">{$ck_information->brief}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="save">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+    //获取表单原始数据
+    var form_info= $("#layui-form").serializeArray();
+    form_info[15] = {'img':$("img[name='img']").attr("src")};
+    var form_string = JSON.stringify({data:form_info});
+    layui.use(['form','upload'], function(){
+        var form = layui.form,
+            upload = layui.upload;//图片上传
+            //图片上传
+            var uploadInst = upload.render({
+
+                elem: '#img' //绑定元素
+                ,field:'img'//上传名称
+                ,method:'post'
+                ,url: '/admin/upload/about_ck_img' //上传接口
+                ,acceptMime: 'image/*'//打开选择狂选择文件格式
+                ,accept:'images'//限制文件类型
+                ,exts:'jpg|png|gif|bmp|jpeg'//图片格式限制
+                ,size:'2000'//图片大小限制
+                ,done: function(result){
+                    if (result.status == 1){
+                        $("form img").remove();
+                        $('#img').parent().append('<img name="img" src='+result.data+' width="200" alt="">');
+                    }
+                }
+                ,error: function(){
+                    //请求异常回调
+                    layer.msg('上传失败',
+                        {icon: 5,
+                            time:1000,
+                        });
+                    return false;
+                }
+            });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            data = data.field;
+            data.img = $("img[name='img']").attr("src");
+            var data_info= $("#layui-form").serializeArray();
+            data_info[15] = {'img':$("img[name='img']").attr("src")};
+            var data_string = JSON.stringify({data:data_info});
+            //检查是否做过修改
+            if (data_string == form_string){
+                layer.alert("未做修改", {
+                    icon: 3
+                });
+                return false;
+            }
+            $.ajax({
+                url:'/admin/about_ck/update',
+                data:data,
+                type:"POST",
+                success:function (result) {
+                    result = JSON.parse(result);
+                    if (result.status == 1){
+                        layer.msg("保存成功", {
+                                icon: 6,
+                                time:2000
+                            },
+                            function() {
+                                window.location.reload();
+                            });
+                    }else {
+                        layer.msg(result.message, {
+                            icon: 5,
+                            time: 1000
+                        });
+                    }
+
+                }
+            });
+            return false;
+        });
+
+    });
+
+</script>
+{/block}

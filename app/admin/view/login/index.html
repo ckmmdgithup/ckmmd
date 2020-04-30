@@ -1,0 +1,90 @@
+{extend name="base/base" /}
+
+{block name="title"}
+请登录
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="{_ADMIN_PATH}/css/login.css">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="login layui-anim layui-anim-up">
+    <div class="message">ck-admin-管理登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form" >
+        <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+        <hr class="hr15">
+        <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+        <hr class="hr15">
+        <input name="captcha" lay-verify="required" placeholder="验证码"  type="text" class="layui-input">
+        <hr class="hr15">
+        <div>{:captcha_img()}</div>
+        <hr class="hr15">
+        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <hr class="hr20" >
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    var show_num = [];
+
+    layui.use(['form'], function () {
+
+        var form = layui.form,
+            layer = layui.layer;
+        // 登录过期的时候，跳出ifram框架
+        if (top.location != self.location) top.location = self.location;
+        // 进行登录操作
+        form.on('submit(login)', function (data) {
+            data = data.field;
+            if (data.username == '') {
+                layer.msg('用户名不能为空');
+                return false;
+            }
+            if (data.password == '') {
+                layer.msg('密码不能为空');
+                return false;
+            }
+            if (data.captcha == '') {
+                layer.msg('验证码不能为空');
+                return false;
+            }
+            // return false;
+            $(".input-val").val('');
+            $.ajax({
+                url:'login',
+                data,
+                type:"POST",
+                success(result){
+                    result = JSON.parse(result);
+                    if(result.status == 1){
+                        layer.msg('登录成功', function () {
+                            window.location = '/admin/index';
+                        });
+                    }else {
+                        layer.msg(result.message);
+                        return false;
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+{/block}
+
+

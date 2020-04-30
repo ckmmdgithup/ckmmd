@@ -1,0 +1,127 @@
+{extend name="base/base" /}
+
+{block name="title"}
+文章列表
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="#">首页</a>
+                <a>
+                    <cite>滚动图片</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加滚动图','/admin/carousel/add',800,600)">
+                        <i class="layui-icon"></i>添加</button></div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th width="150">排序</th>
+                            <th>滚动图片</th>
+                            <th>标题</th>
+                            <th>操作</th></tr>
+                        </thead>
+                        <tbody>
+                        {volist name='carousel_list' id='vo'}
+                        <tr>
+                            <td>
+                                <input onblur="carousel_sort(this,'{$vo.id}')" old-sort="{$vo.sort}" value="{$vo.sort}" style="width: 30px" type="text" name="sort" lay-skin="primary"></td>
+                            <td><img src="{$vo.img}" alt=""></td>
+                            <td><a target="_blank" style="color: #00AA91" href="{$vo.url}">{$vo.title}</a></td>
+                            <td class="td-manage">
+                                <a title="删除" onclick="carousel_del(this,'{$vo.id}')" href="javascript:;">
+                                    <i class="layui-icon">&#xe640;</i></a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    /*滚动图-删除*/
+    function carousel_del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            //发异步删除数据
+            $.ajax({
+                url:'/admin/carousel/del',
+                data:{
+                    'id':id,
+                },
+                type:"POST",
+                success:function (result) {
+                    result = JSON.parse(result);
+                    if (result.status == 1){
+                        layer.msg("已删除", {
+                                icon: 1
+                            },
+                            function() {
+                                $(obj).parents("tr").remove();
+                        });
+                    }else {
+                        layer.msg("删除失败", {
+                            icon: 5
+                        })
+                        return false;
+                    }
+                }
+            });
+        });
+    }
+    //排序
+    function carousel_sort(obj,id) {
+        var sort = $(obj).val();
+        var oldSort = $(obj).attr('old-sort');
+
+        if (sort == oldSort){
+            return false;
+        }
+        $.ajax({
+            url:'/admin/carousel/sort',
+            data:{
+                'id':id,
+                'sort':sort
+            },
+            type:"POST",
+            success:function (result) {
+                result = JSON.parse(result);
+                if (result.status == 1){
+                    $(obj).after('<span style="color: #009688" class="success">已修改,请刷新页面!</span>');
+                    return false;
+                }else {
+                    $(obj).after('<span class="x-red">** 修改失败 !</span>');
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+{/block}

@@ -1,0 +1,148 @@
+{extend name="base/base" /}
+
+{block name="title"}
+ckmmd的博客首页
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/plugin/wangEditor/css/wangEditor.min.css">
+{/block}
+
+{block name="nav"}
+{include file="base/nav" /}
+{/block}
+
+{block name="content"}
+<div class="row w_main_row">
+	<div class="col-lg-9 col-md-9 w_main_left">
+		<div class="panel panel-default  mb-20">
+			<div class="panel-body pt-10 pb-10">
+				<h2 class="c_titile">{$article->title | raw}</h2>
+				<p class="box_c"><span class="d_time">发布时间：{$article->update_time}</span><span>作者：<a href="/http/about_ck/index.html">{$article->author | raw}</a></span><span>阅读（{$article->read_num}）</span></p>
+				<ul class="infos">
+					{$article->content|raw}
+				</ul>
+
+				<div class="keybq">
+					<p><span>关键字</span>：<a class="label label-default">{$article->keywords | raw}</a></p>
+				</div>
+				<div class="nextinfo">
+					<p class="last">上一篇：{if $article_prev == null}没有了{else/}<a href="{$article_prev->url}">{$article_prev->title}</a>{/if}</p>
+					<p class="next">下一篇：{if $article_next == null}没有了{else/}<a href="{$article_next->url}">{$article_next->title}</a>{/if}</p>
+				</div>
+
+			</div>
+			<div class="panel panel-default  mb-20">
+				<div class="tab-category">
+					<a href=""><strong>评论区</strong></a>
+				</div>
+				<div class="panel-body">
+					<div class="panel-body" style="margin: 0 3%;">
+						<div class="mb-20">
+							<ul class="commentList">
+								<li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://qzapp.qlogo.cn/qzapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
+									<div class="comment-main">
+										<header class="comment-header">
+											<div class="comment-meta"><a class="comment-author" href="#">老王</a>
+												<time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
+											</div>
+										</header>
+										<div class="comment-body">
+											<p> 是的</p>
+										</div>
+									</div>
+								</li>
+								<li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://qzapp.qlogo.cn/qzapp/101388738/696C8A17B3383B88804BA92ECBAA5D81/100"></i></a>
+									<div class="comment-main">
+										<header class="comment-header">
+											<div class="comment-meta"><a class="comment-author" href="#">老王</a>
+												<time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
+											</div>
+										</header>
+										<div class="comment-body">
+											<p> +1</p>
+										</div>
+									</div>
+								</li>
+
+							</ul>
+
+						</div>
+						<div class="line"></div>
+						<!--用于评论-->
+						<div class="mt-20" id="ct">
+							<div id="err" class="Huialert Huialert-danger hidden radius">成功状态提示</div>
+							<textarea id="textarea1" name="comment" style="height:200px;" placeholder="看完不留一发？"> </textarea>
+							<div class="text-r mt-10">
+								<button onclick="getPlainTxt()" class="btn btn-primary radius" > 发表评论</button>
+							</div>
+						</div>
+						<!--用于回复-->
+						<div class="comment hidden mt-20">
+							<div id="err2" class="Huialert Huialert-danger hidden radius">成功状态提示</div>
+							<textarea class="textarea" style="height:100px;" > </textarea>
+							<button onclick="hf(this);" type="button" class="btn btn-primary radius mt-10">回复</button>
+							<a class="cancelReply f-r mt-10">取消回复</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{/block}
+
+{block name="other"}
+{include file="base/other" /}
+{/block}
+</div>
+{block name="footer"}
+{include file="base/footer" /}
+{/block}
+
+{block name="js"}
+<script type="text/javascript" src="{_HTTP_PATH}/plugin/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js"></script>
+<script type="text/javascript" src="{_HTTP_PATH}/plugin/wangEditor/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+//幻灯片
+		jQuery(".slider_main .slider").slide({mainCell: ".bd ul", titCell: ".hd li", trigger: "mouseover", effect: "leftLoop", autoPlay: true, delayTime: 700, interTime: 2000, pnLoop: true, titOnClassName: "active"})
+//tips
+		jQuery(".slideTxtBox").slide({titCell: ".hd ul", mainCell: ".bd ul", autoPage: true, effect: "top", autoPlay: true});
+//标签
+		$(".tags a").each(function(){
+			var x = 9;
+			var y = 0;
+			var rand = parseInt(Math.random() * (x - y + 1) + y);
+			$(this).addClass("tags"+rand)
+		});
+
+		$("img.lazyload").lazyload({failurelimit : 3});
+	});
+	$(function () {
+		$("img.lazyload").lazyload({failurelimit : 3});
+
+		wangEditor.config.printLog = false;
+		var editor1 = new wangEditor('textarea1');
+		editor1.config.menus = ['insertcode', 'quote', 'bold', '|', 'img', 'emotion', '|', 'undo', 'fullscreen'];
+		editor1.config.emotions = { 'default': { title: '老王表情', data: 'plugin/wangEditor/emotions1.data'}, 'default2': { title: '老王心情', data: 'plugin/wangEditor/emotions3.data'}, 'default3': { title: '顶一顶', data: 'plugin/wangEditor/emotions2.data'}};
+		editor1.create();
+
+		//show reply
+		$(".hf").click(function () {
+			pId = $(this).attr("name");
+			$(this).parents(".commentList").find(".cancelReply").trigger("click");
+			$(this).parent(".comment-body").append($(".comment").clone(true));
+			$(this).parent(".comment-body").find(".comment").removeClass("hidden");
+			$(this).hide();
+		});
+		//cancel reply
+		$(".cancelReply").on('click',function () {
+			$(this).parents(".comment-body").find(".hf").show();
+			$(this).parents(".comment-body").find(".comment").remove();
+		});
+	});
+
+</script>
+{/block}

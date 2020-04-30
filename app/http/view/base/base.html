@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>ckmmd</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <LINK rel="Bookmark" href="/favicon.ico" >
+    <LINK rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="{_HTTP_PATH}/js/html5shiv.js"></script>
+    <script type="text/javascript" src="{_HTTP_PATH}/js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/plugin/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/plugin/Hui-iconfont/1.0.8/iconfont.min.css" />
+    <link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/css/customize.css" />
+    <link rel="stylesheet" type="text/css" href="{_HTTP_PATH}/plugin/pifu/pifu.css" />
+    {block name="css"}css{/block}
+    <!--[if lt IE 9]>
+    <link href="{_HTTP_PATH}/staticRes/lib/h-ui/css/H-ui.ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } function showSide(){$('.navbar-nav').toggle();}</script>
+</head>
+<body>
+
+<!-- 顶部开始 -->
+{block name="nav"}nav{/block}
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+
+<!-- 主体开始 -->
+<section class="container pt-20">
+<!--    左侧主要内容-->
+{block name="content"}content{/block}
+<!--    右侧其他杂项内容-->
+{block name="other"}other{/block}
+</section>
+<!-- 主体结束 -->
+<!-- 中部结束 -->
+
+<!--底部开始-->
+{block name="footer"}footer{/block}
+<!--底部结束-->
+{block name="js"}js{/block}
+</body>
+
+</html>

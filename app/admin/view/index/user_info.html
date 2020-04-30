@@ -1,0 +1,52 @@
+{extend name="base/base" /}
+
+{block name="title"}
+用户信息
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="">
+{/block}
+
+{block name="container"}
+
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="content"}
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+               登录用户:
+            </label>
+            <div class="layui-form-mid layui-word-aux">
+                {$user_info->name}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                上一次登录:
+            </label>
+            <div class="layui-form-mid layui-word-aux">
+                {$user_info->last_login_time|date='Y-m-d H:i'}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                上一次登录ip:
+            </label>
+            <div class="layui-form-mid layui-word-aux">
+                {$user_info->last_login_ip}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+
+{/block}
