@@ -7,8 +7,6 @@ use think\facade\Session;
 
 class Admin
 {
-
-
     public function handle($request,Closure $closure){
 
         $admin_session = Session::get(config('admin.admin_session'));
