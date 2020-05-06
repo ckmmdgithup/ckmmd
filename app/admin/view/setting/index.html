@@ -30,7 +30,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <form class="layui-form">
+                <form class="layui-form" id="layui-form">
                     <div class="layui-form-item">
                         <label class="layui-form-label">关于本站:</label>
                     </div>
@@ -129,6 +129,7 @@
             var data_string = JSON.stringify({data:data_info});
             //检查是否做过修改
             if (data_string == form_string){
+
                 layer.alert("未做修改", {
                     icon: 3
                 });
@@ -143,13 +144,13 @@
                     if (result.status == 1){
                         layer.msg("保存成功", {
                                 icon: 6,
-                                time:2000
+                                time:1000
                             },
                             function() {
                                 window.location.reload();
                             });
                     }else {
-                        layer.msg("保存失败", {
+                        layer.msg(result.message, {
                             icon: 5,
                             time: 1000
                         });

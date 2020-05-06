@@ -132,9 +132,6 @@ class ArticleCategory
             throw new Exception('更新失败!',config('status.break'));
         }
         $result_article = $this->article_category_model->article()->where(['cate_uname'=>$data['uname']])->update($status);
-        if (!$result_article){
-            throw new Exception('文章更新失败!',config('status.break'));
-        }
         return true;
     }
     public function getArticleCategoryList(){
