@@ -36,6 +36,6 @@ return [
         404 =>  \think\facade\App::getAppPath() . '/view/error/404.html',
     ],
     //分页数量
-    'page_num'=>4,
+    'page_num'=>10,
 
 ];
