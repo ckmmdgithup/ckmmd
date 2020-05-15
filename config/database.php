@@ -23,9 +23,9 @@ return [
             // 服务器地址
             'hostname'          => env('database.hostname', '127.0.0.1'),
             // 数据库名
-            'database'          => env('database.database', 'ckmmd'),
+            'database'          => env('database.database', 'tp'),
             // 用户名
-            'username'          => env('database.username', 'ckmmd'),
+            'username'          => env('database.username', 'tp'),
             // 密码
             'password'          => env('database.password', '904133983'),
             // 端口

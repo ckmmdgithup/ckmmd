@@ -13,11 +13,11 @@ use think\facade\Session;
 class Login extends AdminBaseController
 {
     public function index(){
-
-
         return View::fetch();
     }
     public function login(Request $request){
+        return 'hello word!';
+
         if (!$request->isPost()){
             return show(config('status.error'),'错误的请求',null);
         }
