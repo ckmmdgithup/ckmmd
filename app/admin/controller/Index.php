@@ -22,7 +22,7 @@ class Index extends AdminBaseController
         $article_num = (new ArticleModel())->getAllArticleList()->count();
 
         $sys_info = [
-            'ip'=>'127.0.0.1',//服务器ip地址
+            'ip'=>$_SERVER['SERVER_ADDR'],//服务器ip地址
             'os' => $_SERVER["SERVER_SOFTWARE"], //获取服务器标识的字串
             'version' => PHP_VERSION, //获取PHP服务器版本
             'time' => date("Y-m-d H:i:s", time()), //获取服务器时间

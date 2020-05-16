@@ -64,8 +64,8 @@ class ArticleCategory extends Model
     }
     public function getArticleCategoryById($id){
         $where = [
-            'id'=>$id,
-            'status'=>1
+            ['id','=',$id],
+            ['status','<>',-1]
         ];
         return $this->where($where)->find();
     }

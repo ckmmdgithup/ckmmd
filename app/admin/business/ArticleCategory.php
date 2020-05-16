@@ -26,7 +26,7 @@ class ArticleCategory
             'has_son'=>0,
             'create_time'=>time(),
             'update_time'=>time(),
-            'status'=>config('status.mysql.normal'),
+            'status'=>config('status.mysql.dis_init'),
             'path'=>'0,',
         ];
         $result = $this->article_category_model->saveArticleCategory($save_data);

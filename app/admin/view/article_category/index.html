@@ -68,6 +68,7 @@
                                 {/switch}
                             </td>
                             <td>{switch $vo.status}
+                                    {case 99}<button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="layer.msg('未初始化，请先进行编辑！',{icon:5,time:1000})">未初始化</button>{/case}
                                     {case 2}<button uname="{$vo.uname}" has-son="{$vo.has_son}" path="{$vo.path}" onclick="status(this,{$vo.id},1,'确定要启用该模块及其可能拥有的子分类吗?')" type="button" class="layui-btn layui-btn-radius layui-btn-danger">禁用状态</button>{/case}
                                     {case 1}<button uname="{$vo.uname}" has-son="{$vo.has_son}" path="{$vo.path}" onclick="status(this,{$vo.id},0,'确定要禁用该模块及其可能拥有的子分类吗?')" type="button" class="layui-btn layui-btn-radius">正常</button>{/case}
                                     {case 0}<button disabled="disabled" type="button" class="layui-btn layui-btn-disabled">禁用状态</button>{/case}

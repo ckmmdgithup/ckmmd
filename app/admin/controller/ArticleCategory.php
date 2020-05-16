@@ -80,7 +80,7 @@ class ArticleCategory extends AdminBaseController
                     'description'=>$data['description']
                 ];
                 if ($this->article_category_business->ArticleCategoryUpdate($update_data)==true) {
-                    Cookie::delete('article_category_source_data');
+                    //Cookie::delete('article_category_source_data');
                     //halt($res);
                     return show(config('status.success'),'修改成功',null);
                 }
@@ -100,7 +100,7 @@ class ArticleCategory extends AdminBaseController
                     View::assign([
                         'article_category'=>$article_category,
                     ]);
-                    Cookie::set('article_category_source_data',$article_category,600);
+                    //Cookie::set('article_category_source_data',$article_category,600);
                     return View::fetch();
                 }
             }catch (\Exception $exception){
