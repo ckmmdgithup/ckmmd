@@ -101,7 +101,7 @@ class Article extends HttpBaseController
                     'article_next'=>$article_arr['article_next'],
                 ]);
                 //设置缓存 url与访问ip 拼接生成唯一缓存
-                Cache::set($article_url.$ip, $article_arr, 100);
+                Cache::set($article_url.$ip, $article_arr, config('base.article_cache_time'));
                 return View::fetch();
             }
         }catch (Exception $exception){
