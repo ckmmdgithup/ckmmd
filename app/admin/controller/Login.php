@@ -16,7 +16,7 @@ class Login extends AdminBaseController
         return View::fetch();
     }
     public function login(Request $request){
-        //return 'hello word!';
+        return $request->param();
 
         if (!$request->isPost()){
             return show(config('status.error'),'错误的请求',null);

@@ -8,6 +8,7 @@ use app\http\business\Article as ArticleBusiness;
 use think\App;
 use think\Exception;
 use think\facade\Cache;
+use think\facade\Log;
 use think\facade\View;
 use think\Request;
 
@@ -90,6 +91,7 @@ class Article extends HttpBaseController
             if ($article_arr){
                 //点击数量更新++
                 $article_arr['article']->read_num++;
+                Log::write('这个ip'.$ip.'访问过');
                 $data = [
                     'id' => $article_arr['article']->id,
                     'read_num'=>$article_arr['article']->read_num
