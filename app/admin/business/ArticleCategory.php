@@ -8,6 +8,7 @@ use app\common\model\mysql\ArticleCategory as ArticleCategoryModel;
 
 class ArticleCategory
 {
+
     protected $article_category_model;
 
     public function __construct()
@@ -68,7 +69,6 @@ class ArticleCategory
                 //print_r($sub);
                 $this->article_category_model->updateArticleCategory($son_update);
             }
-
         }
         $result = $this->article_category_model->updateArticleCategory($data);
         if (!$result){
@@ -117,7 +117,6 @@ class ArticleCategory
             foreach ($article_category_son as $item=>$value){
                 $this->article_category_model->article()->where(['cate_uname'=>$value['uname']])->update($status);
             }
-
         }
         if ($data['status']==0) {
             $status = [

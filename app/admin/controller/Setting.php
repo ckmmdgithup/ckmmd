@@ -30,6 +30,8 @@ class Setting extends AdminBaseController
         View::assign([
             'web_information'=>$web_information,
         ]);
+
+
         return View::fetch();
     }
     public function update(Request $request){

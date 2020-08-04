@@ -5,7 +5,12 @@ namespace app\admin\business;
 use think\Exception;
 use app\common\model\mysql\Article as ArticleModel;
 
-
+/**
+ * Class Article
+ * @package app\admin\busis
+ *
+ *
+ */
 class Article
 {
     protected $article_model;
@@ -137,7 +142,6 @@ class Article
         }
         return true;
     }
-
     public function getArticleByUname($uname = null){
         if ($uname == ''){
             $article_list = $this->article_model->getArticleList();
@@ -152,7 +156,5 @@ class Article
             throw new Exception('查找不到!',config('status.break'));
         }
         return $article_by_id;
-
     }
-
 }

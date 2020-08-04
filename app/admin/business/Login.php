@@ -5,14 +5,14 @@ use think\Exception;
 use app\common\model\mysql\User as UserModel;
 use think\facade\Session;
 
-
 class Login
-{
+{//
+
     public function login($data,$request){
         $user_model = new UserModel();
         $user = $user_model->getUserByUsername($data['username']);
         if (empty($user)||$user->password!=md5($data['password'])||$user->status!= config('status.mysql.normal')){
-            throw new Exception('用户名或密码错误',config('status.break'));
+            throw new Exception('用户名或密错误',config('status.break'));
         }
         $update_data = [
             'last_login_time' => time(),
@@ -26,6 +26,4 @@ class Login
         Session::set(config('admin.admin_session'),$user);
         return true;
     }
-
-
 }
